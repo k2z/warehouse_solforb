@@ -14,6 +14,6 @@ namespace AngularApp1.Server.Model.Entities
         public required string Number { get; set; }
         public DateOnly Date { get; set; }
 
-        public List<IncomeResource> IncomeResources { get; set; } = new List<IncomeResource>();
+        public ICollection<IncomeResource> IncomeResources { get; set; } = new List<IncomeResource>();
     }
 }

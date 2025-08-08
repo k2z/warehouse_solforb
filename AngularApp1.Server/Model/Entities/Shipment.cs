@@ -24,6 +24,6 @@ namespace AngularApp1.Server.Model.Entities
 
         public int ClientId { get; set; }
         public Client? Client { get; set; }
-        public List<ShipmentResource> ShipmentResources { get; set; } = new List<ShipmentResource>();
+        public ICollection<ShipmentResource> ShipmentResources { get; set; } = new List<ShipmentResource>();
     }
 }

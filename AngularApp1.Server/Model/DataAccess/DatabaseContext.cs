@@ -27,8 +27,70 @@ namespace AngularApp1.Server.Model.DataAccess
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            string connectionString = "Server=localhost;Database=warehouse;User Id=WarehouseNetappUser;Password=340$Uuxwp7Mcxo7Khy;";
-            optionsBuilder.UseSqlServer(connectionString);
+            optionsBuilder.UseSqlite("Data Source=warehouselocal.db");
+            // string connectionString = "Server=localhost;Database=warehouse;User Id=WarehouseNetappUser;Password=340$Uuxwp7Mcxo7Khy;";
+            // optionsBuilder.UseSqlServer(connectionString);
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Client>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+                entity.HasIndex(e => e.Name).IsUnique();
+            });
+
+            modelBuilder.Entity<Measure>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+                entity.HasIndex(e => e.Name).IsUnique();
+            });
+
+            modelBuilder.Entity<Resource>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+                entity.HasIndex(e => e.Name).IsUnique();
+            });
+
+            modelBuilder.Entity<Shipment>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+                entity.HasIndex(e => e.Number).IsUnique();
+                entity.HasMany(e => e.ShipmentResources).WithOne(ir => ir.Shipment).HasForeignKey(ir => ir.ShipmentId);
+            });
+
+            modelBuilder.Entity<Income>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+                entity.HasIndex(e => e.Number).IsUnique();
+                entity.HasMany(e => e.IncomeResources).WithOne(ir => ir.Income).HasForeignKey(ir => ir.IncomeId);
+            });
+
+            modelBuilder.Entity<Balance>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+            });
+
+            modelBuilder.Entity<ShipmentResource>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+            });
+
+            modelBuilder.Entity<IncomeResource>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+                entity.HasOne(e => e.Resource);
+            });
+            
+            base.OnModelCreating(modelBuilder);
         }
     }
 }
