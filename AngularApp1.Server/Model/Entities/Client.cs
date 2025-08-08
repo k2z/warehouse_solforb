@@ -12,11 +12,9 @@ namespace AngularApp1.Server.Model.Entities
 
     public class Client
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public required string Name { get; set; }
-        public string Address { get; set; }
+        public string? Address { get; set; }
         public ClientStatus Status { get; set; }
     }
 }

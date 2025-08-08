@@ -5,8 +5,6 @@ namespace AngularApp1.Server.Model.Entities
 {
     public class Income
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         // [MaxLength(50)]

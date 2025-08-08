@@ -34,6 +34,8 @@ namespace AngularApp1.Server.Model.DataAccess
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // TODO: Define Nullables and Non-Nullables
+            // TODO: Define String Types for some fields like Number varchar 50
             modelBuilder.Entity<Client>(entity =>
             {
                 entity.HasKey(e => e.Id);
@@ -75,19 +77,24 @@ namespace AngularApp1.Server.Model.DataAccess
             {
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).ValueGeneratedOnAdd();
+                entity.HasOne(e => e.Resource).WithMany(r => r.Balances).HasForeignKey(e => e.ResourceId);
+                entity.HasOne(e => e.Measure).WithMany(r => r.Balances).HasForeignKey(e => e.MeasureId);
             });
 
             modelBuilder.Entity<ShipmentResource>(entity =>
             {
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).ValueGeneratedOnAdd();
+                entity.HasOne(e => e.Resource).WithMany(r => r.ShipmentResources).HasForeignKey(e => e.ResourceId);
+                entity.HasOne(e => e.Measure).WithMany(m => m.ShipmentResources).HasForeignKey(e => e.MeasureId);
             });
 
             modelBuilder.Entity<IncomeResource>(entity =>
             {
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).ValueGeneratedOnAdd();
-                entity.HasOne(e => e.Resource);
+                entity.HasOne(e => e.Resource).WithMany(r => r.IncomeResources).HasForeignKey(e => e.ResourceId);
+                entity.HasOne(e => e.Measure).WithMany(m => m.IncomeResources).HasForeignKey(e => e.MeasureId);
             });
             
             base.OnModelCreating(modelBuilder);
