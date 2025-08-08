@@ -34,13 +34,12 @@ namespace AngularApp1.Server.Model.DataAccess
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // TODO: Define Nullables and Non-Nullables
-            // TODO: Define String Types for some fields like Number varchar 50
             modelBuilder.Entity<Client>(entity =>
             {
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).ValueGeneratedOnAdd();
                 entity.HasIndex(e => e.Name).IsUnique();
+                entity.Property(e => e.Name).HasColumnType("varchar(250)").IsRequired();
             });
 
             modelBuilder.Entity<Measure>(entity =>
@@ -48,6 +47,7 @@ namespace AngularApp1.Server.Model.DataAccess
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).ValueGeneratedOnAdd();
                 entity.HasIndex(e => e.Name).IsUnique();
+                entity.Property(e => e.Name).HasColumnType("varchar(50)").IsRequired();
             });
 
             modelBuilder.Entity<Resource>(entity =>
@@ -55,6 +55,7 @@ namespace AngularApp1.Server.Model.DataAccess
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).ValueGeneratedOnAdd();
                 entity.HasIndex(e => e.Name).IsUnique();
+                entity.Property(e => e.Name).HasColumnType("varchar(250)").IsRequired();
             });
 
             modelBuilder.Entity<Shipment>(entity =>
@@ -62,7 +63,8 @@ namespace AngularApp1.Server.Model.DataAccess
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).ValueGeneratedOnAdd();
                 entity.HasIndex(e => e.Number).IsUnique();
-                entity.HasMany(e => e.ShipmentResources).WithOne(ir => ir.Shipment).HasForeignKey(ir => ir.ShipmentId);
+                entity.Property(e => e.Number).HasColumnType("varchar(50)").IsRequired();
+                entity.HasMany(e => e.ShipmentResources).WithOne(ir => ir.Shipment).HasForeignKey(ir => ir.ShipmentId).IsRequired();
             });
 
             modelBuilder.Entity<Income>(entity =>
@@ -70,31 +72,32 @@ namespace AngularApp1.Server.Model.DataAccess
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).ValueGeneratedOnAdd();
                 entity.HasIndex(e => e.Number).IsUnique();
-                entity.HasMany(e => e.IncomeResources).WithOne(ir => ir.Income).HasForeignKey(ir => ir.IncomeId);
+                entity.Property(e => e.Number).HasColumnType("varchar(50)").IsRequired();
+                entity.HasMany(e => e.IncomeResources).WithOne(ir => ir.Income).HasForeignKey(ir => ir.IncomeId).IsRequired();
             });
 
             modelBuilder.Entity<Balance>(entity =>
             {
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).ValueGeneratedOnAdd();
-                entity.HasOne(e => e.Resource).WithMany(r => r.Balances).HasForeignKey(e => e.ResourceId);
-                entity.HasOne(e => e.Measure).WithMany(r => r.Balances).HasForeignKey(e => e.MeasureId);
+                entity.HasOne(e => e.Resource).WithMany(r => r.Balances).HasForeignKey(e => e.ResourceId).IsRequired();
+                entity.HasOne(e => e.Measure).WithMany(r => r.Balances).HasForeignKey(e => e.MeasureId).IsRequired();
             });
 
             modelBuilder.Entity<ShipmentResource>(entity =>
             {
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).ValueGeneratedOnAdd();
-                entity.HasOne(e => e.Resource).WithMany(r => r.ShipmentResources).HasForeignKey(e => e.ResourceId);
-                entity.HasOne(e => e.Measure).WithMany(m => m.ShipmentResources).HasForeignKey(e => e.MeasureId);
+                entity.HasOne(e => e.Resource).WithMany(r => r.ShipmentResources).HasForeignKey(e => e.ResourceId).IsRequired();
+                entity.HasOne(e => e.Measure).WithMany(m => m.ShipmentResources).HasForeignKey(e => e.MeasureId).IsRequired();
             });
 
             modelBuilder.Entity<IncomeResource>(entity =>
             {
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).ValueGeneratedOnAdd();
-                entity.HasOne(e => e.Resource).WithMany(r => r.IncomeResources).HasForeignKey(e => e.ResourceId);
-                entity.HasOne(e => e.Measure).WithMany(m => m.IncomeResources).HasForeignKey(e => e.MeasureId);
+                entity.HasOne(e => e.Resource).WithMany(r => r.IncomeResources).HasForeignKey(e => e.ResourceId).IsRequired();
+                entity.HasOne(e => e.Measure).WithMany(m => m.IncomeResources).HasForeignKey(e => e.MeasureId).IsRequired();
             });
             
             base.OnModelCreating(modelBuilder);

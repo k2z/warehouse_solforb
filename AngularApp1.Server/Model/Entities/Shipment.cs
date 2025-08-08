@@ -13,15 +13,12 @@ namespace AngularApp1.Server.Model.Entities
     public class Shipment
     {
         public int Id { get; set; }
-
-        // [MaxLength(50)]
-        [Column(TypeName = "varchar(50)")]
         public required string Number { get; set; }
         public DateOnly Date { get; set; }
         public ShipmentState State { get; set; }
 
         public int ClientId { get; set; }
-        public Client? Client { get; set; }
+        public Client Client { get; set; } = null!;
         public ICollection<ShipmentResource> ShipmentResources { get; set; } = new List<ShipmentResource>();
     }
 }
