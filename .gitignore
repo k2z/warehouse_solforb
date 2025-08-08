@@ -52,3 +52,6 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+AngularApp1.Server/warehouselocal.db
+AngularApp1.Server/warehouselocal.db-wal
+AngularApp1.Server/warehouselocal.db-shm
