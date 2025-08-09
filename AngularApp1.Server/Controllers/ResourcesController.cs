@@ -1,4 +1,5 @@
 using AngularApp1.Server.Model.DataAccess;
+using AngularApp1.Server.Model.DataTransferObjects;
 using AngularApp1.Server.Model.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,7 +23,9 @@ namespace AngularApp1.Server.Controllers
     {
       using (var db = new DatabaseContext())
       {
-        var result = await db.Resources.ToListAsync();
+        var result = await db.Resources
+          .Select(r => new Model.DataTransferObjects.Resource { Id = r.Id, Name = r.Name, Status = r.Status })
+          .ToListAsync();
         return Ok(result);
       }
     }
@@ -32,7 +35,7 @@ namespace AngularApp1.Server.Controllers
     {
       using (var db = new DatabaseContext())
       {
-        Resource newItem = new() { Name = name, Status = ResourceStatus.Active };
+        Model.Entities.Resource newItem = new() { Name = name, Status = ResourceStatus.Active };
         await db.Resources.AddAsync(newItem);
         await db.SaveChangesAsync();
         var result = await db.Resources.SingleAsync(r => r.Name == name);
